@@ -1,12 +1,17 @@
+const express = require('express');
 const mongoose = require('mongoose');
-const jayson = require('jayson');
-const requireDir = require('require-dir');
+const bodyParser = require('body-parser');
+
 const config = require('./config.json');
+const routes = require('./routes/');
 
-const methods = requireDir('methods');
-const server = jayson.server(methods);
+const app = express();
 
-mongoose.connect(config.mongo)
-  .then(() => console.log('MongoDb connected'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-server.http().listen(config.port, console.log(`RPC server is run on port : ${config.port}`));
+app.use('/', routes);
+
+mongoose.connect(config.mongo, { useMongoClient: true })
+
+app.listen(config.port, console.log(`server is run on port ${config.port}`));

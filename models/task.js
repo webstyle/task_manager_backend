@@ -14,8 +14,10 @@ const TaskSchema = new Schema({
     type: Date
   }],
   filePath: String,
+  command: String,
   description: String,
-  log: String,
+  stderr: String,
+  stdout: String,
   exitCode: Number,
   status: String
 });
