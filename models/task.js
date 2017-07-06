@@ -22,4 +22,7 @@ const TaskSchema = new Schema({
   status: String
 });
 
+TaskSchema.index({ _id: 1 }, { sparse: true });
+
+
 module.exports = mongoose.model('tasks', TaskSchema, 'tasks');

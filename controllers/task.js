@@ -1,6 +1,7 @@
 const validation = require('../services/validation');
-const Task = require('../models/task');
+const Tasks = require('../models/task');
 const exec = require('../services/exec');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 function createAndRun(req, res) {
   const schema = {
@@ -21,7 +22,7 @@ function createAndRun(req, res) {
     return res.json(error);
   }
 
-  let task = new Task({
+  let task = new Tasks({
     title: req.body.title,
     command: req.body.command || '',
     filePath: req.body.filePath || ''
@@ -37,11 +38,11 @@ function createAndRun(req, res) {
 
 function runOne(req, res) {
   if (!req.params.id) return res.json({ message: 'ID required' });
-  const id = req.body.id;
+  const id = req.params.id;
 
-  Task.findOne({ _id: id }, (err, task) => {
+  Tasks.findById(id, (err, task) => {
     if (err) return res.json({ message: err.message });
-
+    if (!task) return res.json({ message: 'task not found' });
     exec(task, (stdout, stderr) => res.json({ task, stdout, stderr }));
   });
 }

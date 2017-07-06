@@ -7,6 +7,9 @@ const routes = require('./routes/');
 
 const app = express();
 
+mongoose.Promise = global.Promise;
+mongoose.connect(config.mongo, { useMongoClient: true });
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
