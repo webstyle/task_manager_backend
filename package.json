@@ -4,6 +4,7 @@
   "description": "Task manager",
   "main": "index.js",
   "scripts": {
+    "build": "node_modules/typescript/bin/tsc index.ts && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
