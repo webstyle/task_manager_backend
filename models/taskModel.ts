@@ -17,6 +17,7 @@ export interface ITask extends Document {
 }
 
 export interface ITaskModel extends Model<ITask> {
+    findAll(): Promise<ITask>
 }
 
 const schema = new Schema({
@@ -37,6 +38,13 @@ const schema = new Schema({
     stdout: String,
     exitCode: Number,
     status: String
+});
+
+schema.static("findAllByAuthor", (author: string) => {
+    return Task
+        .find({})
+        .lean()
+        .exec();
 });
 
 export const Task = mongoose.model<ITask>("tasks", schema) as ITaskModel;

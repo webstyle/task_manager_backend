@@ -1,49 +1,55 @@
-const validation = require('../services/validation');
+import * as express from 'express';
+import {validate} from '../services/validation'
+import {run} from '../services/exec';
+
 const Tasks = require('../models/task');
-const exec = require('../services/exec');
 
-export function createAndRun(req, res) {
-    const schema = {
-        "type": 'object',
-        "properties": {
-            "title": { type: 'string' },
-            "command": { type: 'string' },
-            "filePath": { type: 'string' },
-        },
-        "required": ['title'],
-    };
+export class TaskController {
+    constructor() {}
 
-    if (req.body.filePath) schema.required.push("filePath");
-    if (req.body.command) schema.required.push("command");
+    static createAndRun(req: express.Request, res: express.Response): express.Response {
+        const schema = {
+            "type": 'object',
+            "properties": {
+                "title": {type: 'string'},
+                "command": {type: 'string'},
+                "filePath": {type: 'string'},
+                "saveAndRun": {type: 'boolean'}
+            },
+            "required": ['title'],
+        };
 
-    const error = validation(req.body, schema);
-    if (!error.valid) {
-        return res.json(error);
+        if (req.body.filePath) schema.required.push("filePath");
+        if (req.body.command) schema.required.push("command");
+
+        const error = validate(req.body, schema);
+        if (!error.valid) {
+            return res.json(error);
+        }
+
+        let task = new Tasks({
+            title: req.body.title,
+            command: req.body.command || '',
+            filePath: req.body.filePath || ''
+        });
+
+        task.save((err, savedTask) => {
+            if (err) return res.json(err.message);
+            if (!req.body.saveAndRun) return res.json({task: savedTask});
+            run(savedTask, (stderr, stdout) => {
+                res.json({task: savedTask, stderr, stdout});
+            });
+        });
     }
 
-    let task = new Tasks({
-        title: req.body.title,
-        command: req.body.command || '',
-        filePath: req.body.filePath || ''
-    });
+    static runOne(req: express.Request, res: express.Response): express.Response {
+        if (!req.params.id) return res.json({message: 'ID required'});
+        const id = req.params.id;
 
-    task.save((err, savedTask) => {
-        if (err) return res.json(err.message);
-        exec(savedTask, (stderr, stdout) => {
-            res.json({ task: savedTask, stderr, stdout });
+        Tasks.findById(id, (err, task) => {
+            if (err) return res.json({message: err.message});
+            if (!task) return res.json({message: 'task not found'});
+            run(task, (stdout, stderr) => res.json({task, stdout, stderr}));
         });
-    });
+    }
 }
-
-export function runOne(req, res) {
-    if (!req.params.id) return res.json({ message: 'ID required' });
-    const id = req.params.id;
-
-    Tasks.findById(id, (err, task) => {
-        if (err) return res.json({ message: err.message });
-        if (!task) return res.json({ message: 'task not found' });
-        exec(task, (stdout, stderr) => res.json({ task, stdout, stderr }));
-    });
-}
-
-
