@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/WebStyle/task_manager_backend#readme",
   "dependencies": {
+    "@types/body-parser": "^1.16.4",
+    "@types/express": "^4.0.36",
+    "@types/jsonschema": "^1.1.1",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "jsonschema": "^1.1.1",

@@ -1,20 +1,15 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-
-const config = require('./config.json');
-const routes = require('./routes/');
-
-const app = express();
-
+"use strict";
+exports.__esModule = true;
+var express = require("express");
+var mongoose = require("mongoose");
+var bodyParser = require("body-parser");
+var config_1 = require("./config");
+var routes = require('./routes/');
+var app = express();
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongo, { useMongoClient: true });
-
+mongoose.connect(config_1.config.mongo, { useMongoClient: true });
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use('/', routes);
-
-mongoose.connect(config.mongo, { useMongoClient: true })
-
-app.listen(config.port, console.log(`server is run on port ${config.port}`));
+mongoose.connect(config_1.config.mongo, { useMongoClient: true });
+app.listen(config_1.config.port, function () { return console.log("server is run on port " + config_1.config.port); });
