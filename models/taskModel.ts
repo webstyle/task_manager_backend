@@ -1,7 +1,7 @@
 import { mongoose } from "../database/database";
 import { Schema, Model, Document } from "mongoose";
 
-export interface ITask extends Document {
+export interface ITask {
     title: string;
     create?: Date;
     description?: string;
@@ -16,9 +16,7 @@ export interface ITask extends Document {
     status: string;
 }
 
-export interface ITaskModel extends Model<ITask> {
-    findAll(): Promise<ITask>
-}
+interface ITaskModel extends ITask, mongoose.Document { }
 
 const schema = new Schema({
     title: String,
@@ -40,11 +38,4 @@ const schema = new Schema({
     status: String
 });
 
-schema.static("findAllByAuthor", (author: string) => {
-    return Task
-        .find({})
-        .lean()
-        .exec();
-});
-
-export const Task = mongoose.model<ITask>("tasks", schema) as ITaskModel;
+export const Task = mongoose.model<ITaskModel>("tasks", schema);

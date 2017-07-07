@@ -1,8 +1,8 @@
 import * as express from 'express';
 import {validate} from '../services/validation'
 import {run} from '../services/exec';
+import {Task} from '../models/taskModel';
 
-const Tasks = require('../models/task');
 
 export class TaskController {
     constructor() {}
@@ -27,7 +27,7 @@ export class TaskController {
             return res.json(error);
         }
 
-        let task = new Tasks({
+        let task = new Task({
             title: req.body.title,
             command: req.body.command || '',
             filePath: req.body.filePath || ''
@@ -46,7 +46,7 @@ export class TaskController {
         if (!req.params.id) return res.json({message: 'ID required'});
         const id = req.params.id;
 
-        Tasks.findById(id, (err, task) => {
+        Task.findById(id, (err, task) => {
             if (err) return res.json({message: err.message});
             if (!task) return res.json({message: 'task not found'});
             run(task, (stdout, stderr) => res.json({task, stdout, stderr}));
