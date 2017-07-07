@@ -37,7 +37,7 @@ export class TaskController {
             if (err) return res.json(err.message);
             if (!req.body.saveAndRun) return res.json({task: savedTask});
             run(savedTask, (stdout, stderr) => {
-                res.json({task: savedTask, stderr, stdout});
+                res.json({task: savedTask, stdout, stderr});
             });
         });
     }

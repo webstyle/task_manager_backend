@@ -1,4 +1,4 @@
-import mongoose = require("mongoose");
+import mongoose from 'mongoose';
 import * as settings from '../settings';
 
 mongoose.Promise = global.Promise;
