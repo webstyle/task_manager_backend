@@ -17,11 +17,11 @@ export function run(task, callback) {
     }
 }
 
-function runCommand(command, callback) {
+function runCommand(command: string, callback) {
     exec(command, callback);
 }
 
-function runFile(filePath, callback) {
+function runFile(filePath: string, callback) {
     execFile(filePath, [], callback);
 }
 

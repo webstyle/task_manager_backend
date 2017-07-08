@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import * as settings from '../settings';
+import mongoose = require("mongoose");
+import {config} from '../settings';
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(settings.config.mongo);
+mongoose.connect(config.mongo);
 
 export {mongoose};
