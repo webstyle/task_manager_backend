@@ -6,13 +6,13 @@ export function run(task, callback) {
         return runCommand(task.command, (error, stdout, stderr) => {
             log(error, stdout, stderr);
 
-            return callback(stdout, stderr);
+            return callback(stdout, stderr || error);
         });
     }
     if (task.filePath) {
         return runFile(task.filePath, (error, stdout, stderr) => {
             log(error, stdout, stderr);
-            return callback(stdout, stderr);
+            return callback(stdout, stderr || error);
         });
     }
 }

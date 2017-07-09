@@ -5,7 +5,14 @@ import {Task} from '../models/taskModel';
 
 
 export class TaskController {
-    constructor() {}
+    constructor() {
+    }
+
+    static findAll(req: express.Request, res: express.Response) {
+        Task.find({})
+            .then(response => res.json(response))
+            .catch(error => res.json({message: error.message}));
+    }
 
     static createAndRun(req: express.Request, res: express.Response): express.Response {
         const schema = {

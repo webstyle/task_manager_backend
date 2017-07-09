@@ -1,11 +1,13 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser'
+import * as cors from 'cors';
 
 import * as settings from './settings';
 import {TaskRoutes} from './routes/TaskRoutes';
 
 const app: express.Application = express();
 
+app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
