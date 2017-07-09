@@ -7,5 +7,6 @@ export class TaskRoutes {
             .get('/all', TaskController.findAll)
             .post('/', TaskController.createAndRun)
             .get('/:id', TaskController.runOne)
+            .delete('/:id', TaskController.remove)
     }
 }
