@@ -22,6 +22,11 @@ After that you can build project with following command:
 ```bash
 $ npm run build
 ```
+
+For development:
+```bash
+$ ts-node index.ts
+```
 Then server will be run at: `http://localhost:3000`
 
 # Frontend
