@@ -31,3 +31,7 @@ Then server will be run at: `http://localhost:3000`
 
 # Frontend
 If you successfully installed backend. You can install [frontend](https://github.com/WebStyle/task_manager_frontend).
+
+# TODO
+* User authentiation
+* Run commands with Cron job
